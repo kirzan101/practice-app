@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Home;
 use App\Models\Property;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PropertyController extends Controller
 {
@@ -39,12 +40,21 @@ class PropertyController extends Controller
             'home_id' => 'required|exists:homes,id'
         ]);
 
-        Property::create([
-            'name' => $request->name,
-            'description' => $request->description,
-            'home_id' => $request->home_id
-        ]);
+        // Transaction
+        // // returns a model
+        try {
+            DB::beginTransaction();
 
+            Property::create([
+                'name' => $request->name,
+                'description' => $request->description,
+                'home_id' => $request->home_id
+            ]);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+        }
+        DB::commit();
         return redirect('/properties')->with('message', 'success saved');
     }
 

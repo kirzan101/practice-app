@@ -1,16 +1,32 @@
 @extends('layout')
 
 @section('content')
+    <h1>PROPERTIES</h1>
+    <!-- /resources/views/post/create.blade.php -->
+
+    <h1>Create Post</h1>
+
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    <!-- Create Post Form -->
     <form method="POST" action="/properties">
         @csrf
-        <label for="fname">Name:</label><br>
+        <label for="name">Name:</label><br>
         <input type="text" id="name" name="name"><br>
-        <label for="lname">Description:</label><br>
+        <label for="description">Description:</label><br>
         <input type="text" id="description" name="description"><br>
-        <label for="cars">Choose a car:</label>
+        <label for="home_id">Choose a Home:</label>
         <select name="home_id" id="home_id">
             @foreach ($homes as $home)
-                <option value="{{$home->id}}">{{$home->name}}</option>
+                <option value="{{ $home->id }}">{{ $home->name }}</option>
             @endforeach
         </select>
         <br>

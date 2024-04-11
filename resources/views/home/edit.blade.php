@@ -1,6 +1,7 @@
 @extends('layout')
 
 @section('content')
+    <h1>HOMES</h1>
     <form method="POST" action="/home/edit/{{ $home->id }}">
         @method('PUT')
         @csrf

@@ -1,6 +1,7 @@
 @extends('layout')
 
 @section('content')
+    <h1>PROPERTIES</h1>
     <form method="POST" action="/properties/{{ $property->id }}">
         @method('PUT')
         @csrf

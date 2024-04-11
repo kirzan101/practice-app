@@ -43,7 +43,7 @@ class HomeController extends Controller
             'description' => 'required'
         ]);
 
-        // // returns a model
+        // Transaction
         try {
             DB::beginTransaction();
 
@@ -51,7 +51,7 @@ class HomeController extends Controller
                 'name' => $request->name,
                 'description' => $request->description
             ]);
-    
+
         } catch (\Exception $e) {
             DB::rollBack();
         }
@@ -85,8 +85,6 @@ class HomeController extends Controller
             'description' => $request->description
         ]);
 
-        dd($home, 'update');
-
         return redirect('/home')->with('success', 'success');
     }
 
@@ -96,9 +94,10 @@ class HomeController extends Controller
      * @param Home $home
      * @return void
      */
-    public function destroy(Home $home) {
+    public function destroy(Home $home)
+    {
         $home->delete();
-        
+
         return redirect('/home')->with('success', 'success');
     }
 }
