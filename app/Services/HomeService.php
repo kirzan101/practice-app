@@ -11,17 +11,13 @@ use Illuminate\Support\Facades\DB;
 class HomeService implements HomeInterface
 {
     public $return_values = [];
+    use ReturnCollectionTrait, ReturnModelTrait;
 
     public function indexHomeService(): array
     {
         $homes = Home::all();
 
-        $this->return_values = [
-            'results' => $homes,
-            'status' => 200
-        ];
-
-        return $this->return_values;
+        return $this->returnCollection(200, 'success',$homes);
     }
     public function showHomeService(): array
     {
@@ -36,23 +32,15 @@ class HomeService implements HomeInterface
                 'name' => $request['name'],
                 'description' => $request['description']
             ]);
+
+            $this->return_values =  $this->returnModel(201, 'success created', $home);
         } catch (Exception $e) {
             DB::rollBack();
 
-            $this->return_values = [
-                'result' => null,
-                'status' => 500,
-                'message' => $e->getMessage()
-            ];
+            $this->return_values = $this->returnModel(500, $e->getMessage());
         }
         DB::commit();
-
-        $this->return_values = [
-            'result' => $home,
-            'status' => 200,
-            'message' => 'Success created'
-        ];
-
+        
         return $this->return_values;
     }
     public function updateHomeService(array $request, int $home_id): array
@@ -66,22 +54,14 @@ class HomeService implements HomeInterface
                 'name' => $request['name'],
                 'description' => $request['description']
             ]);
+
+            $this->return_values =  $this->returnModel(200, 'success updated', $home);
         } catch (Exception $e) {
             DB::rollBack();
 
-            $this->return_values = [
-                'result' => null,
-                'status' => 500,
-                'message' => $e->getMessage()
-            ];
+            $this->return_values = $this->returnModel(500, $e->getMessage());
         }
         DB::commit();
-
-        $this->return_values = [
-            'result' => $home,
-            'status' => 200,
-            'message' => 'Success updated'
-        ];
 
         return $this->return_values;
     }
@@ -94,22 +74,13 @@ class HomeService implements HomeInterface
 
             $home->delete();
 
+            $this->return_values =  $this->returnModel(200, 'success deleted');
         } catch (Exception $e) {
             DB::rollBack();
 
-            $this->return_values = [
-                'result' => null,
-                'status' => 500,
-                'message' => $e->getMessage()
-            ];
+            $this->return_values = $this->returnModel(500, $e->getMessage());
         }
         DB::commit();
-
-        $this->return_values = [
-            'result' => $home,
-            'status' => 200,
-            'message' => 'Success deleted'
-        ];
 
         return $this->return_values;
     }
