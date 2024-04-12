@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('description');
             $table->unsignedBigInteger('home_id');
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('home_id')->references('id')->on('homes');
         });

@@ -2,12 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Interfaces\HomeInterface;
 use App\Models\Home;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
+    public function __construct(
+        private HomeInterface $home
+    ) {
+        $this->home = $home;
+    }
+
     /**
      * display list of homes
      *
@@ -15,7 +22,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $homes = Home::all();
+        ['results' => $homes] = $this->home->indexHomeService();
 
         return view('home.index', compact('homes'));
     }
@@ -43,21 +50,13 @@ class HomeController extends Controller
             'description' => 'required'
         ]);
 
-        // Transaction
-        try {
-            DB::beginTransaction();
+        ['status' => $status, 'message' => $message] = $this->home->createHomeService($request->toArray());
 
-            Home::create([
-                'name' => $request->name,
-                'description' => $request->description
-            ]);
-
-        } catch (\Exception $e) {
-            DB::rollBack();
+        if ($status == 500) {
+            return view('error')->with('error', $message);
         }
-        DB::commit();
 
-        return redirect('/home')->with('success', 'success');
+        return redirect('/home')->with('success', $message);
     }
 
     /**
@@ -80,12 +79,13 @@ class HomeController extends Controller
      */
     public function update(Home $home, Request $request)
     {
-        $home = tap($home)->update([
-            'name' => $request->name,
-            'description' => $request->description
-        ]);
+        ['status' => $status, 'message' => $message] = $this->home->updateHomeService($request->toArray(), $home->id);
 
-        return redirect('/home')->with('success', 'success');
+        if ($status == 500) {
+            return view('error')->with('error', $message);
+        }
+
+        return redirect('/home')->with('success', $message);
     }
 
     /**
@@ -96,7 +96,11 @@ class HomeController extends Controller
      */
     public function destroy(Home $home)
     {
-        $home->delete();
+        ['status' => $status, 'message' => $message] = $this->home->deleteHomeService($home->id);
+
+        if ($status == 500) {
+            return view('error')->with('error', $message);
+        }
 
         return redirect('/home')->with('success', 'success');
     }
