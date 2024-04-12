@@ -21,10 +21,10 @@ class HomeService implements HomeInterface
 
         return $this->returnCollection(200, 'success',$homes);
     }
-    public function showHomeService(): array
+    /* public function showHomeService(): array
     {
         return $this->return_values;
-    }
+    } */
     public function createHomeService(array $request): array
     {
         try {
