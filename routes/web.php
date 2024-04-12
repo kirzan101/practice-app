@@ -26,6 +26,5 @@ Route::post('/home/create', [HomeController::class, 'store']);
 Route::get('/home/edit/{home}', [HomeController::class, 'edit']);
 Route::put('/home/edit/{home}', [HomeController::class, 'update']);
 Route::delete('/home/delete/{home}', [HomeController::class, 'destroy']);
-
 Route::resource('properties', PropertyController::class)->except(['show']);
 

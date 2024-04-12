@@ -2,6 +2,10 @@
 
 @section('content')
     <h1>HOMES</h1>
+    <ul class="breadcrumb">
+        <li><a href="/home">Home</a></li>
+        <li>Create Home</li>
+    </ul>
     @if ($errors->any())
         <div class="alert alert-danger">
             <ul>

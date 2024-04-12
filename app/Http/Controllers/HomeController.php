@@ -6,6 +6,7 @@ use App\Interfaces\HomeInterface;
 use App\Models\Home;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Contracts\View\View;
 
 class HomeController extends Controller
 {
@@ -20,7 +21,7 @@ class HomeController extends Controller
      *
      * @return void
      */
-    public function index()
+    public function index(): View
     {
         ['results' => $homes] = $this->home->indexHomeService();
 
@@ -32,7 +33,7 @@ class HomeController extends Controller
      *
      * @return void
      */
-    public function create()
+    public function create(): View
     {
         return view('home.create');
     }
@@ -65,7 +66,7 @@ class HomeController extends Controller
      * @param Home $home
      * @return void
      */
-    public function edit(Home $home)
+    public function edit(Home $home): View
     {
         return view('home.edit', compact('home'));
     }
@@ -102,6 +103,6 @@ class HomeController extends Controller
             return view('error')->with('error', $message);
         }
 
-        return redirect('/home')->with('success', 'success');
+        return redirect('/home')->with('success', $message);
     }
 }

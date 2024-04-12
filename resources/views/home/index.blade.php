@@ -8,9 +8,15 @@
     <h1>HOMES</h1>
     <h1>
         @if (session('success'))
-            {{ session('success') }}
+            <div class="alert success">
+                <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                <strong>{{ session('success') }}</strong>
+            </div>
         @endif
     </h1>
+    <ul class="breadcrumb">
+        <li>Home</li>
+    </ul>
 
     <a type="button" href="/home/create"><button>Create Home</button></a>
     <br><br>
