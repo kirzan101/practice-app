@@ -5,6 +5,8 @@ namespace App\Services;
 
 use App\Interfaces\HomeInterface;
 use App\Models\Home;
+use App\Traits\ReturnCollectionTrait;
+use App\Traits\ReturnModelTrait;
 use Exception;
 use Illuminate\Support\Facades\DB;
 
