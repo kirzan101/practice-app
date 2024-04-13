@@ -7,24 +7,32 @@ use App\Interfaces\HomeInterface;
 use App\Models\Home;
 use App\Traits\ReturnCollectionTrait;
 use App\Traits\ReturnModelTrait;
+use App\Traits\ReturnPaginatorTrait;
 use Exception;
 use Illuminate\Support\Facades\DB;
 
 class HomeService implements HomeInterface
 {
     public $return_values = [];
-    use ReturnCollectionTrait, ReturnModelTrait;
+    use ReturnCollectionTrait, ReturnModelTrait, ReturnPaginatorTrait;
 
     public function indexHomeService(): array
     {
-        $homes = Home::all();
+        $pagination_size = 10;
+        $homes = Home::paginate($pagination_size);
 
-        return $this->returnCollection(200, 'success', $homes);
+        return $this->returnPaginator(200, 'success', $homes, $pagination_size);
     }
-    /* public function showHomeService(): array
+
+    public function paginationHomeService(array $request): array
     {
-        return $this->return_values;
-    } */
+        $pagination_size = $request['pagination'];
+
+        $homes = Home::paginate($pagination_size);
+
+        return $this->returnPaginator(200, 'success', $homes, $pagination_size);
+    }
+
     public function createHomeService(array $request): array
     {
         try {

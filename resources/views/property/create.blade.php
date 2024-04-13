@@ -4,7 +4,10 @@
     <h1>PROPERTIES</h1>
     <!-- /resources/views/post/create.blade.php -->
 
-    <h1>Create Post</h1>
+    <ul class="breadcrumb">
+        <li><a href="/properties">Property</a></li>
+        <li>Create Property</li>
+    </ul>
 
     @if ($errors->any())
         <div class="alert alert-danger">

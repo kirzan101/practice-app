@@ -7,6 +7,7 @@ use App\Interfaces\PropertyInterface;
 use App\Services\HomeService;
 use App\Services\PropertyService;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Pagination\Paginator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -25,5 +26,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         //
+        Paginator::useBootstrapFive();
     }
 }

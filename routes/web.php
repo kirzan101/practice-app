@@ -21,6 +21,7 @@ Route::get('/', function () {
 
 
 Route::get('/home', [HomeController::class, 'index']);
+Route::post('/home', [HomeController::class, 'pagination']);
 Route::get('/home/create', [HomeController::class, 'create']);
 Route::post('/home/create', [HomeController::class, 'store']);
 Route::get('/home/edit/{home}', [HomeController::class, 'edit']);
