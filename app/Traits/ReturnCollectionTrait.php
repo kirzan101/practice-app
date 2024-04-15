@@ -2,8 +2,6 @@
 
 namespace App\Traits;
 
-use App\Models\Home;
-use App\Models\Property;
 use Illuminate\Database\Eloquent\Collection;
 
 trait ReturnCollectionTrait

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Interfaces\PropertyInterface;
 use App\Models\Home;
 use App\Models\Property;
 use Illuminate\Http\Request;
@@ -9,12 +10,18 @@ use Illuminate\Support\Facades\DB;
 
 class PropertyController extends Controller
 {
+    public function __construct(
+        private PropertyInterface $property
+    ) {
+        $this->property = $property;
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $properties = Property::all();
+        ['results' => $properties] = $this->property->indexPropertyService();
 
         return view('property.index', compact('properties'));
     }
@@ -40,22 +47,12 @@ class PropertyController extends Controller
             'home_id' => 'required|exists:homes,id'
         ]);
 
-        // Transaction
-        // // returns a model
-        try {
-            DB::beginTransaction();
-
-            Property::create([
-                'name' => $request->name,
-                'description' => $request->description,
-                'home_id' => $request->home_id
-            ]);
-
-        } catch (\Exception $e) {
-            DB::rollBack();
+        ['status' => $status, 'message' => $message] = $this->property->createPropertyService($request->toArray());
+        if ($status == 500) {
+            return view('error')->with('error', $message);
         }
-        DB::commit();
-        return redirect('/properties')->with('message', 'success saved');
+
+        return redirect('/properties')->with('success', $message);
     }
 
     /**
@@ -73,13 +70,14 @@ class PropertyController extends Controller
      */
     public function update(Request $request, Property $property)
     {
-        tap($property)->update([
-            'name' => $request->name,
-            'description' => $request->description,
-            'home_id' => $request->home_id
-        ]);
 
-        return redirect('/properties')->with('message', 'success update');
+        ['status' => $status, 'message' => $message] = $this->property->updatePropertyService($request->toArray(), $property->id);
+
+        if ($status == 500) {
+            return view('error')->with('error', $message);
+        }
+
+        return redirect('/properties')->with('success', $message);
     }
 
     /**
@@ -87,8 +85,12 @@ class PropertyController extends Controller
      */
     public function destroy(Property $property)
     {
-        $property->delete();
+        ['status' => $status, 'message' => $message] = $this->property->deletePropertyService($property->id);
 
-        return redirect('/properties')->with('message', 'success delete');
+        if ($status == 500) {
+            return view('error')->with('error', $message);
+        }
+
+        return redirect('/properties')->with('success', $message);
     }
 }

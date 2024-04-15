@@ -8,9 +8,15 @@
     <h1>PROPERTIES</h1>
     <h1>
         @if (session('success'))
-            {{ session('success') }}
+            <div class="alert success">
+                <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                <strong>{{ session('success') }}</strong>
+            </div>
         @endif
     </h1>
+    <ul class="breadcrumb">
+        <li>Property</li>
+    </ul>
 
     <a type="button" href="/properties/create"><button>Create Property</button></a>
     <br><br>
@@ -39,4 +45,5 @@
             </tr>
         @endforeach
     </table>
+    {{ $properties->links() }}
 @endsection

@@ -2,6 +2,10 @@
 
 @section('content')
     <h1>PROPERTIES</h1>
+    <ul class="breadcrumb">
+        <li><a href="/properties">Property</a></li>
+        <li>Edit Property</li>
+    </ul>
     <form method="POST" action="/properties/{{ $property->id }}">
         @method('PUT')
         @csrf
