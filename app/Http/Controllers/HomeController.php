@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\HomeFormRequest;
 use App\Interfaces\HomeInterface;
 use App\Models\Home;
 use Illuminate\Http\Request;
@@ -56,16 +57,11 @@ class HomeController extends Controller
     /**
      * save home to database
      *
-     * @param Request $request
+     * @param HomeFormRequest $request
      * @return void
      */
-    public function store(Request $request)
+    public function store(HomeFormRequest $request)
     {
-        $request->validate([
-            'name' => 'required',
-            'description' => 'required'
-        ]);
-
         ['status' => $status, 'message' => $message] = $this->home->createHomeService($request->toArray());
 
         if ($status == 500) {
@@ -90,10 +86,10 @@ class HomeController extends Controller
      * updtes to database
      *
      * @param Home $home
-     * @param Request $request
+     * @param HomeFormRequest $request
      * @return void
      */
-    public function update(Home $home, Request $request)
+    public function update(Home $home, HomeFormRequest $request)
     {
         ['status' => $status, 'message' => $message] = $this->home->updateHomeService($request->toArray(), $home->id);
 
